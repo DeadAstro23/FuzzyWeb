@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TriangleNumbers</title>
+
+    <script type='text/javascript' src='client/scripts/jquery.min.js'></script>
+    <script src="client/lib/chartist-js-develop/dist/chartist.min.js"></script>
+    <script src="client/scripts/jquery-1.9.1.min.js"></script>
+
+    <!--Model-->
+    <script type='text/javascript' src='client/scripts/model/FLKnowledgeMatrix.js'></script>
+    <script type='text/javascript' src='client/scripts/model/FLRuleBase.js'></script>
+    <script type='text/javascript' src='client/scripts/model/FLTerm.js'></script>
+    <script type='text/javascript' src='client/scripts/model/FLTriangleNumber.js'></script>
+    <script type='text/javascript' src='client/scripts/model/FLVariable.js'></script>
+
+    <!--Logic-->
+    <script type='text/javascript' src='client/scripts/logic/FLContainer.js'></script>
+    <script type='text/javascript' src='client/scripts/logic/FuzzyLogic.js'></script>
+
+    <!--UI-->
+    <script type='text/javascript' src='client/scripts/ui/FLDocumentWindowHelperUI.js'></script>
+    <script type='text/javascript' src='client/scripts/ui/FLChartHelperUI.js'></script>
+    <script type='text/javascript' src='client/scripts/ui/FLFormHelperUI.js'></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="client/lib/chartist-js-develop/dist/chartist.min.css">
+    <link rel="stylesheet" href="client/styles/css-style.css" type="text/css">
+</head>
+<body>
+
+<div class="navigation-menu">
+    <button onclick="showPopup();">
+        <div class="navigation-item">
+            <span>New VAR</span>
+            <hr color="black">
+        </div>
+    </button>
+    <button onclick="buildRules();">
+        <div class="navigation-item">
+            <span>Build RULES</span>
+            <hr color="black">
+        </div>
+    </button>
+    <button onclick="run();">
+        <div class="navigation-item">
+            <span>run fuzzy-tech</span>
+            <hr color="black">
+        </div>
+    </button>
+</div>
+
+<div class="div-workspace" id="workspace">
+
+</div>
+
+<div class="popup">
+    <div class="popup_bg"></div>
+    <div class="form">
+        <form>
+            <table>
+                <tr>
+                    <td>
+                        <select id="typeVar" onchange="changeSelectTypeVariable();">
+                            <option value="1">INPUT</option>
+                            <option value="0">OUTPUT</option>
+                        </select>
+                        VARIABLE
+                    </td>
+                    <td>
+                        <input type="text" size="50" id="titleVar" placeholder="TITLE VARIABLE"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        COUNT LINGVISTIC TERMS
+                    </td>
+                    <td>
+                        <input type="number" id="countTerm" min="0" onchange="changeCountTerms();" value="0"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%">
+                        <div class="term-data">
+                            <form>
+                                <table style="height: 100%; width: 100%">
+                                    <tr>
+                                        <td colspan="2">
+                                            DATA TRIANGLE NUMERIC
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            <input type="text" size="50" placeholder="NAME LINGVISTIC TERM" id = "name"/>
+                                        </td>
+                                        <td width="50%">
+                                            <input type="text" size="3" placeholder="SHORT NAME TERM" id = "shortName"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Left Range:
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="LEFT RANGE" id = "a0"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Middle Range:
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="MIDDLE RANGE" id = "a1"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Right Range:
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="RIGHT RANGE" id = "a2"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="button" value="Preview" onclick="btnPreview();"/>
+                                        </td>
+                                        <td>
+                                            <input type="button" value="Next" onclick="btnNext();"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="button" value="Accept" onclick="btnAccept();"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <p id="termPages"></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="term-data">
+                            <div id="graphic" style="height: 400px; width: 100%;">
+                                <div class="ct-chart" style="height: 100%; width: 100%"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        SIGNAL
+                    </td>
+                    <td>
+                        <input type="number" id="signalValue" min="0" value="0"/>
+                    </td>
+                </tr>
+            </table>
+            <input type="button" value="Done" onclick="btnDone();"/>
+        </form>
+    </div>
+</div>
+
+<script>
+    ////////////////////////////////////////////////////////C H A R T//////////////////////////////////////////////////////////////////////
+
+    var data = {
+        labels: horizontal,
+        series: series
+    };
+
+    let plotOptions = {
+        // Don't draw the line chart points
+        showPoint: false,
+        // Disable line smoothing
+        lineSmooth: false,
+        // X-Axis specific configuration
+        axisX: {
+            // We can disable the grid for this axis
+            showGrid: false,
+            // and also don't show the label
+            showLabel: false
+        },
+        // Y-Axis specific configuration
+        axisY: {
+            // Lets offset the chart a bit from the labels
+            offset: 100,
+            // The label interpolation function enables you to modify the values
+            // used for the labels on each axis. Here we are converting the
+            // values into million pound.
+            labelInterpolationFnc: function (value) {
+                return value;
+            }
+        }
+    };
+
+    let chart = new Chartist.Line('.ct-chart', data, plotOptions);
+
+    ////////////////////////////////////////////////////////C H A R T//////////////////////////////////////////////////////////////////////
+</script>
+</body>
+</html>

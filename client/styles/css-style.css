@@ -1,0 +1,127 @@
+body {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(54,54,54,0.25);
+    margin:0;
+    text-align:center;
+}
+
+body button {
+    cursor:pointer;
+    margin:40px 0 0 0;
+}
+
+.popup {
+    position: absolute;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    display:none;
+}
+
+.popup_dss {
+    position: absolute;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    display:none;
+}
+
+.popup_bg_dss {
+    background:rgba(0,0,0,0.4);
+    position:absolute;
+    z-index:1;
+    height:100%;
+    width:100%;
+}
+
+.popup_bg {
+    background:rgba(0,0,0,0.4);
+    position:absolute;
+    z-index:1;
+    height:100%;
+    width:100%;
+}
+
+.form {
+    position: relative;
+    margin: 4px auto;
+    z-index: 2;
+    width: 70%;
+    height: auto;
+    padding: 40px 20px;
+    background: #FFFFFF;
+    border: 1px solid #666666;
+    border-radius: 20px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.form input {
+    width:96%;
+    padding:5px 2%;
+    margin:10px 0;
+    border-radius:4px;
+    display:inline-block;
+}
+
+.term-data{
+    height: 0px;
+    visibility: hidden;
+}
+
+/*NAVIGATION MENU*/
+
+.navigation-menu{
+    position: absolute;
+    opacity: 0.85;
+    background-color: #333333;
+    height: 100%;
+    width: 8%;
+}
+
+.navigation-item{
+    text-align: center;
+    line-height: 70px;
+    width: 100%;
+}
+
+.navigation-item > span{
+    font-family: Verdana;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: black;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+/*WORKSAPCE*/
+
+.div-workspace{
+    position: absolute;
+    left: 8%;
+    width: 92%;
+    height: 100%;
+}
+
+.div-variable{
+    padding: 10px;
+    white-space: normal;
+    font-size: 18px;
+    text-transform: uppercase;
+    border: 1px solid black;
+    position:absolute;
+    float:left;
+    top:15px;
+    left:15px;
+    background-color: #EAEAEA;
+    width:150px;
+    height:auto;
+}
+
+.div-variable:hover{
+    cursor:default;
+}
