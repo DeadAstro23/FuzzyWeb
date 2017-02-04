@@ -22,11 +22,13 @@ function fetchTriangleDataForm() {
         document.getElementById("a1").valueOf().value,
         document.getElementById("a2").valueOf().value
     );
+    console.log('triangleNumber', triangleNumber);
     let termData = new Term(
         triangleNumber,
         document.getElementById("name").valueOf().value,
         document.getElementById("shortName").valueOf().value
     );
+    console.log('termData', termData)
     return termData;
 }
 

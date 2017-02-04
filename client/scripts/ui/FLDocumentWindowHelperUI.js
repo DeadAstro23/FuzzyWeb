@@ -53,8 +53,10 @@ function createFuzzyDSSUIElement() {
 
     let rectWorkspace = workspace.getBoundingClientRect();
     let width = rectWorkspace.right - rectWorkspace.left;
-    divElem.style.top = "40px";
-    divElem.style.left = width / 4 + "px";
+    divElem.style.left = "0px";
+    divElem.style.right = '0px';
+    divElem.style.position = 'absolute';
+    divElem.style.marginTop = '75px';
 
     divElem.onclick = function () {
         createPopup();
@@ -85,8 +87,7 @@ function createPopup() {
     popup.appendChild(popup_bg);
     popup.appendChild(form);
 
-    let workspace = document.getElementById('workspace');
-    workspace.appendChild(popup);
+    document.body.appendChild(popup);
 }
 
 function buildRules() {
@@ -94,6 +95,7 @@ function buildRules() {
         alert("You need create input and output variable");
     } else {
         baseOfRules = new RuleBase(variables);
+        console.log(variables);
         createFuzzyDSSUIElement();
     }
 }
@@ -191,21 +193,77 @@ function getResultGroup(vectorFuziification) {
     return group;
 }
 
+let resultGroupArray = [];
+
 function run() {
     let vector = fuzzificationVector();
     console.log(vector);
     console.log(vector.length);
 
     if(vector.length > 0) {
-        alert("vector: " + vector.join());
+        vector.join();
 
         let resultGroup = getResultGroup(vector);
-        alert("result Group: " + resultGroup.getName());
+        resultGroupArray.push(resultGroup);
+
+        let result = resultGroup.getName();
+        let workspace = document.getElementById('workspace');
+
+        let a = document.createElement('span');
+        a.innerHTML = "vector: " + vector.join() + '<br/>' + 'result Group: ' + result + '<br/>';
+        a.className = 'vector-info';
+
+        let workspaceContent = workspace.innerHTML;
+        let workspaceCopy = document.createElement('div');
+        workspaceCopy.className = 'workspace-copy';
+        workspaceCopy.innerHTML = a.outerHTML + workspaceContent;
+
+        //document.body.insertBefore(a, workspace);
+
+        document.body.appendChild(workspaceCopy);
+
+        workspace.innerHTML = '';
+
+        /* ------------- */
+        countVariables = 0;
+
+        currentVariable = -1;
+
+        variables = [];
+
+        outputVar = undefined;
+
+        baseOfRules = undefined;
+        knowledgeMatrix = undefined;
+
+        currentTerm = 0;
+
+        series = [];
+
+        terms = [];
+
+        chart = new Chartist.Line('.ct-chart', data, plotOptions);
+        /* ------------- */
+
+
+        if ( resultGroupArray.length >= 2) {
+            alert('IT WORKS!!!!');
+            // тут теперь нужно задавать только аутпут а в вектор передавать resultGroupArray и возможно приедтся менять переменные выше а не сбрасывать их
+        }
     }
     else {
         alert('You haven\'t filled all the needed info !');
     }
 
+}
+
+function run1() {
+    let vector = resultGroupArray;
+
+    if(vector.length > 0) {
+        let resultGroup = getResultGroup(vector);
+        alert("result Group: " + resultGroup.getName());
+    }
 }
 
 function hidePopup() {
@@ -284,8 +342,11 @@ function btnPreview() {
 }
 
 function btnAccept() {
+    console.log(currentTerm, terms.length);
     if (currentTerm >= terms.length) {
-        addTerm(fetchTriangleDataForm());
+        var temp = fetchTriangleDataForm();
+        console.log(temp);
+        addTerm(temp);
     } else {
         editTermByID(currentTerm);
     }
