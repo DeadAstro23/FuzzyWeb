@@ -31,36 +31,27 @@ function funzzificationByArrayGroup(arrayGroup) {
         let set = new Array(0);
 
         for (var ruleItem = 0; ruleItem < listRules.length; ruleItem++) {
-            //console.log(listRules[ruleItem], listRules[ruleItem].getPowerOfMembershipBySignal(variables[ruleItem].getSignalValue()));
-            console.log(variables[ruleItem]);
             set.push(listRules[ruleItem].getPowerOfMembershipBySignal(variables[ruleItem].getSignalValue()));
-            console.log('funzzificationByArrayGroup - set', set);
         }
 
         set.sort( function (a, b) {
             return a - b;
         });
 
-        console.log('funzzificationByArrayGroup - set next', set);
         resultSet.push(set[0]);
-        console.log(resultSet);
     }
     resultSet.sort( function (a, b) {
         return b - a;
     });
-    console.log(resultSet);
     return resultSet[0];
 }
 
 function fuzzificationVector() {
-    console.log('fuzzificationVector', knowledgeMatrix);
     let vector;
     if (knowledgeMatrix !== undefined){
         vector = new Array(knowledgeMatrix.getListKnowledgeMatrix().length);
         for (var index = 0; index < vector.length; index++) {
-            console.log(index)
             vector[index] = funzzificationByArrayGroup(knowledgeMatrix.getListKnowledgeMatrix()[index]);
-            console.log('fuzzificationVector', vector[index]);
         }
     }
     else {

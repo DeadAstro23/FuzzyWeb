@@ -6,6 +6,9 @@ let currentVariable = -1;
 let variables;
 variables = new Array(0);
 
+let variablesOut;
+variablesOut = new Array(0);
+
 let outputVar;
 
 let baseOfRules;
@@ -35,8 +38,12 @@ function addVariable(variable) {
         variables.push(variable);
         countVariables++;
         createVariableUIElementWithIndex(countVariables-1);
+        console.log(variables)
     } else if (variable.getType() == 0){
+        variablesOut.push(variable);
+        console.log(variablesOut);
         outputVar = variable;
+        console.log(outputVar);
         createOutputVariableUIElement();
     }
 }

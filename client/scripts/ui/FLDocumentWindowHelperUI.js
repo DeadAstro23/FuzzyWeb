@@ -95,8 +95,7 @@ function buildRules() {
         alert("You need create input and output variable");
     } else {
         baseOfRules = new RuleBase(variables);
-        console.log(variables);
-        createFuzzyDSSUIElement();
+``        createFuzzyDSSUIElement();
     }
 }
 
@@ -194,11 +193,10 @@ function getResultGroup(vectorFuziification) {
 }
 
 let resultGroupArray = [];
+let variablesGroupArray = [];
 
 function run() {
     let vector = fuzzificationVector();
-    console.log(vector);
-    console.log(vector.length);
 
     if(vector.length > 0) {
         vector.join();
@@ -224,12 +222,30 @@ function run() {
 
         workspace.innerHTML = '';
 
+        let b = JSON.stringify(resultGroup);
+
+        variables[0].list.forEach(function (variable) {
+            let a = JSON.stringify(variable);
+
+            if (a === b) {
+                variablesGroupArray.push(variable)
+            }
+        });
+
+        variablesOut[0].list.forEach(function (variable) {
+            let a = JSON.stringify(variable);
+            if (a === b) {
+                variablesGroupArray = variablesOut[0];
+            }
+        });
+
         /* ------------- */
         countVariables = 0;
 
         currentVariable = -1;
 
         variables = [];
+        variablesOut = [];
 
         outputVar = undefined;
 
@@ -245,14 +261,16 @@ function run() {
         chart = new Chartist.Line('.ct-chart', data, plotOptions);
         /* ------------- */
 
-
-        if ( resultGroupArray.length >= 2) {
-            alert('IT WORKS!!!!');
-            // тут теперь нужно задавать только аутпут а в вектор передавать resultGroupArray и возможно приедтся менять переменные выше а не сбрасывать их
-        }
     }
     else {
         alert('You haven\'t filled all the needed info !');
+    }
+
+    if ( resultGroupArray.length >= 2) {
+        variables = variablesGroupArray;
+        console.log('IT WORKS!!!!', variables);
+        // нужно додумать как рисовать график повторно и дизейблить лишние кнопки
+        // + выяснить по шагам какие данные приходят в функции run и модифицировать run1
     }
 
 }
@@ -342,10 +360,8 @@ function btnPreview() {
 }
 
 function btnAccept() {
-    console.log(currentTerm, terms.length);
     if (currentTerm >= terms.length) {
         var temp = fetchTriangleDataForm();
-        console.log(temp);
         addTerm(temp);
     } else {
         editTermByID(currentTerm);
@@ -368,6 +384,5 @@ function btnDone() {
 function btnAcceptRules() {
     fetchRulesDataForm();
     knowledgeMatrix = new KnowledgeMatrix(outputVar, baseOfRules);
-    console.log(knowledgeMatrix);
     hidePopupDss();
 }
